@@ -4,7 +4,7 @@ from bot import BotBybit
 from os import path
 
 def main():
-    config: Config = load_config(path.join('bots', 'parserBybit', '.env'))
+    config: Config = load_config(path.join('parserBybit', '.env'))
 
     bot = BotBybit(config=config)
 
