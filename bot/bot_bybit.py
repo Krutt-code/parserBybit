@@ -1,6 +1,4 @@
-from aiogram.filters import CommandStart
 from aiogram import Bot, Dispatcher
-from aiogram.types import Message
 from .manage_data import DataM
 
 import asyncio

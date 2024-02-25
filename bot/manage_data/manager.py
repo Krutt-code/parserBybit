@@ -7,7 +7,7 @@ from os import path
 class DataM:
     def __init__(self, config) -> None:
         self.config = config
-        self.data_path = path.join('botBybit', 'bot', 'manage_data', self.config.data.data_file_name)
+        self.data_path = path.join('bots', 'bot', 'manage_data', self.config.data.data_file_name)
 
     def __update_data_prices(self):
         print('[INFO] Начинаю сбор данных')
@@ -85,12 +85,10 @@ class DataM:
                     end_time  =items[0][0]
                 )
 
-                if time_difference >= self.config.data.period_time:
-                    if not data['🔴']:
-                        data['🔴'] = self.__change_check([items[0], item])
-                        continue
-                else:
-                    continue
+                if time_difference >= self.config.data.period_time*4:
+                    if not data['🟡']:
+                        data['🟡'] = self.__change_check([items[0], item])
+                        return data
 
                 if time_difference >= self.config.data.period_time*2:
                     if not data['🟠']:
@@ -99,10 +97,10 @@ class DataM:
                 else:
                     continue
 
-                if time_difference >= self.config.data.period_time*4:
-                    if not data['🟡']:
-                        data['🟡'] = self.__change_check([items[0], item])
-                        return data
+                if time_difference >= self.config.data.period_time:
+                    if not data['🔴']:
+                        data['🔴'] = self.__change_check([items[0], item])
+                        continue
                     
             return data
         return data

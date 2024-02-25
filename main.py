@@ -1,9 +1,10 @@
 from config import Config, load_config
 from bot import BotBybit
 
+from os import path
 
 def main():
-    config: Config = load_config('/home/kukuruzka-vitya/CODE/botBybit/.env')
+    config: Config = load_config(path.join('bots', '.env'))
 
     bot = BotBybit(config=config)
 
