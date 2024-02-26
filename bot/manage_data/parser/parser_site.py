@@ -13,6 +13,7 @@ class ParserBybit:
 
     def __get_data(self, driver) -> list:
         soup = BS(driver.page_source, 'lxml')
+        print(soup.get_text())
 
         for item in soup.find_all('tr')[1:]:
             if item.find_all("span")[1].text.strip() != '/USDT':
