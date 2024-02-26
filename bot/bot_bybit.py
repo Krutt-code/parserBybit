@@ -1,7 +1,10 @@
 from aiogram import Bot, Dispatcher
 from .manage_data import DataM
 
+import logging
 import asyncio
+
+
 
 class BotBybit:
     def __init__(self, config) -> None:
@@ -41,6 +44,10 @@ class BotBybit:
                 await self.bot.send_message(self.canal_id, message)
 
     async def background_task(self):
+
+        logging.basicConfig(filename='telegram_bot.log', level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
         while True:
             # Проверяем условие
             if data := DataM(config=self.config).run():

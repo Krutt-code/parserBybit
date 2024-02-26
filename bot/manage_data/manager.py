@@ -1,5 +1,5 @@
 from .parser import ParserBybit, JsonHandler
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from os import path
 
@@ -18,7 +18,7 @@ class DataM:
         )
     
     def __get_time(self):
-        date = datetime.now()
+        date = datetime.now() + timedelta(hours=3)
         return date.strftime('%Y %m %d %H %M')
     
     def __calculate_time_difference_minutes(self, start_time, end_time):
