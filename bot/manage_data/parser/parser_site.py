@@ -52,6 +52,7 @@ class ParserBybit:
             driver.implicitly_wait(10)
             
             page_count = self.__get_count_pages(driver=driver)
+            print(page_count)
             print(' - [INFO] Страница 1 собрана')
             for page in range(2, page_count + 1):
                 self.__get_data(driver=driver)
