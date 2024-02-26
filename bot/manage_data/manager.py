@@ -10,7 +10,7 @@ class DataM:
         self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
 
     def __update_data_prices(self):
-        print('[INFO] Начинаю сбор данных')
+        
         JsonHandler(self.data_path).write_to_json(
             {
             self.__get_time(): ParserBybit().run()

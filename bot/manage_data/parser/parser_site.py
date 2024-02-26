@@ -47,6 +47,7 @@ class ParserBybit:
         url = 'https://www.bybit.com/ru-RU/markets/overview'
 
         with Driver(uc=True) as driver:
+            print('[INFO] Начинаю сбор данных')
             driver.get(url)
             driver.implicitly_wait(10)
             
