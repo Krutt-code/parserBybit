@@ -58,6 +58,7 @@ class ParserBybit:
 
         # data['data'] = data_m
         print('[INFO] Сбор данных завершен')
+        print('#'*50)
         return self.data
 
 
