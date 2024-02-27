@@ -49,7 +49,7 @@ class ParserBybit:
     def run(self) -> dict:
         url = 'https://www.bybit.com/ru-RU/markets/overview'
 
-        logger = logging.getLogger()
+        logger = logging.getLogger('parser')
 
         while True:
             try:
@@ -59,12 +59,12 @@ class ParserBybit:
                     driver.implicitly_wait(10)
                     
                     page_count = self.__get_count_pages(driver=driver)
-                    logger.info(' - Страница 1 собираеться')
+                    # logger.info(' - Страница 1 собирается')
                     for page in range(2, page_count + 1):
                         sleep(2)
                         self.__get_data(driver=driver)
                         self.__next_page(driver=driver, page=page)
-                        logger.info(f' - Страница {page} собрана')
+                        # logger.info(f' - Страница {page} собрана')
 
                 # data['data'] = data_m
                 logger.info('Сбор данных завершен')        

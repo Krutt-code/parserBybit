@@ -1,20 +1,15 @@
 from aiogram import Bot, Dispatcher
 from .manage_data import DataM
+from time import sleep
 
 import logging
-import logging.handlers
-
 import asyncio
 
+logger = logging.getLogger('parser')
 class BotBybit:
     def __init__(self, config) -> None:
         self.config = config
-        self.bot = Bot(token=config.tg_bot.token,
-                parse_mode='Markdown')
-        self.dp = Dispatcher()
-        
         self.canal_id = self.config.tg_bot.canal_id
-        self.user_task = False
 
     async def __send_message_to_user(self, data: dict) -> None:
         for mode, item in data.items():
@@ -43,39 +38,22 @@ class BotBybit:
                 message += '```'
                 await self.bot.send_message(self.canal_id, message)
 
-    async def background_task(self):
+            logger.info('Сообщение успешно отправлено')
 
-        handler = logging.handlers.TimedRotatingFileHandler('parser_tg_bot.log', when="W0", interval=1, backupCount=1)
-        handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-        
-        logger = logging.getLogger()
-        logger.setLevel(logging.INFO)
-        logger.addHandler(handler)
-
+    async def main(self):
         while True:
             # Проверяем условие
             data = DataM(config=self.config).run()
+            # print('\n'.join(data.values()))
             if any(i for i in data.values()):
+                self.bot = Bot(token=self.config.tg_bot.token,
+                parse_mode='Markdown')
                 await self.__send_message_to_user(data=data)
             else:
-                pass
+                logger.info('Нет данных для отправки')
+
             
-                # await self.bot.send_message(self.canal_id, '\[INFO] Нет данных для сравнения')
-            await asyncio.sleep(self.config.data.period_time * 60) 
-
-    # Функция конфигурирования и запуска бота
-    async def main(self):
-        if not self.user_task:
-            task = asyncio.create_task(self.background_task())
-            self.user_task = True
-        # else:
-            # await message.answer(text='Бот уже запущен')
-        # @self.dp.message(CommandStart())
-        # async def process_start_command(message: Message):
-        #     await message.answer(text='Начинаю работу')
-
-            await self.bot.delete_webhook(drop_pending_updates=True)
-            await self.dp.start_polling(self.bot)
+            sleep(self.config.data.period_time * 60) 
 
     def run(self):
         asyncio.run(self.main())
