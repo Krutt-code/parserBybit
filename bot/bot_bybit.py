@@ -29,7 +29,7 @@ class BotBybit:
                 time2, price2 = item2
                 change = round(((price2 - price1) / price2) * 100, 1)
                 message += f'{name}/USDT {change}%: \n{":".join(time1.split()[:-3:-1][::-1])} = {price1}\n{":".join(time2.split()[:-3:-1][::-1])} = {price2}\n{"#"*30}\n'
-
+ 
                 if index % 10 == 9:
                     message += '```'
                     await self.bot.send_message(self.canal_id, message)
