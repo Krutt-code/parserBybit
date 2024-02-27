@@ -7,7 +7,7 @@ from os import path
 class DataM:
     def __init__(self, config) -> None:
         self.config = config
-        self.data_path = path.join('bots', 'bot', 'manage_data', self.config.data.data_file_name)
+        self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
         
 
     def __update_data_prices(self):
