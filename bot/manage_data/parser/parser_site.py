@@ -61,15 +61,16 @@ class ParserBybit:
                     page_count = self.__get_count_pages(driver=driver)
                     logger.info(' - Страница 1 собираеться')
                     for page in range(2, page_count + 1):
+                        sleep(2)
                         self.__get_data(driver=driver)
-                        logger.info(f' - Страница {page} собрана')
                         self.__next_page(driver=driver, page=page)
+                        logger.info(f' - Страница {page} собрана')
 
                 # data['data'] = data_m
                 logger.info('Сбор данных завершен')        
                 return self.data
             except Exception as e:
-                logger.error(f'{e}')
+                logger.error(f'Ошибка при сборе данных: {e}')
                 sleep(10)
 
 if __name__ == '__main__':
