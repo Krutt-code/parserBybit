@@ -33,12 +33,12 @@ class BotBybit:
                 if index % 10 == 9:
                     message += '```'
                     await self.bot.send_message(self.canal_id, message)
-                    asyncio.sleep(1)
+                    await asyncio.sleep(1)
 
             if message[:-4:-1] != '```':
                 message += '```'
                 await self.bot.send_message(self.canal_id, message)
-                asyncio.sleep(1)
+                await asyncio.sleep(1)
 
             logger.info('Сообщение успешно отправлено')
 
@@ -55,7 +55,7 @@ class BotBybit:
                 logger.info('Нет данных для отправки')
 
             
-            asyncio.sleep(self.config.data.period_time * 60) 
+            await asyncio.sleep(self.config.data.period_time * 60) 
 
     def run(self):
         asyncio.run(self.main())
