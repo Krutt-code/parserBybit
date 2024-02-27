@@ -40,7 +40,7 @@ class BotBybit:
                 await self.bot.send_message(self.canal_id, message)
                 await asyncio.sleep(1)
 
-            logger.info('Сообщение успешно отправлено')
+        logger.info('Сообщение успешно отправлено')
 
     async def main(self):
         while True:
