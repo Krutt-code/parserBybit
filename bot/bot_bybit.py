@@ -33,12 +33,11 @@ class BotBybit:
                 if index % 10 == 9:
                     message += '```'
                     await self.bot.send_message(self.canal_id, message)
-                    await asyncio.sleep(1)
+                    message = ''
 
             if message[:-4:-1] != '```':
                 message += '```'
                 await self.bot.send_message(self.canal_id, message)
-                await asyncio.sleep(1)
 
         logger.info('Сообщение успешно отправлено')
 
