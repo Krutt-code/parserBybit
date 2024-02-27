@@ -4,22 +4,22 @@ from datetime import datetime, timedelta
 from os import path
 
 class DataM:
-    def __init__(self, config) -> None:
+    def __init__(self, config, time) -> None:
         self.config = config
         self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
-        
+        self.time = time
+
+    def __get_time(self):
+        date = datetime.now() + timedelta(hours=3)
+        return date.strftime('%Y %m %d %H %M')
 
     def __update_data_prices(self):
         
         JsonHandler(self.data_path).write_to_json(
             {
-            self.__get_time(): ParserBybit().run()
+            self.time: ParserBybit().run()
             }
         )
-    
-    def __get_time(self):
-        date = datetime.now() + timedelta(hours=3)
-        return date.strftime('%Y %m %d %H %M')
     
     def __calculate_time_difference_minutes(self, start_time, end_time):
         time_diff = datetime(*map(int, end_time.split())) - datetime(*map(int, start_time.split()))
@@ -56,7 +56,7 @@ class DataM:
         new_data = {}
 
         for time, item in data.items():
-            time_now = self.__get_time()
+            time_now = self.__get_time
             if ((datetime(*map(int, time_now.split())) - datetime(*map(int, time.split()))).total_seconds() // 60) <= self.config.data.period_time*4:
                 new_data[time] = item
 
