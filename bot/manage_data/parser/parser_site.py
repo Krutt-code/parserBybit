@@ -72,6 +72,7 @@ class ParserBybit:
             except Exception as e:
                 logger.error(f'Ошибка при сборе данных: {e}')
                 sleep(10)
+                logger.info('Пробую еще раз...')
 
 if __name__ == '__main__':
     pars = ParserBybit()
