@@ -38,7 +38,7 @@ class BotBybit:
                 time1, price1 = item1
                 time2, price2 = item2
                 change = round(((price2 - price1) / price2) * 100, 1)
-                message += f'{name}/USDT {change}%: \n{":".join(time1.split()[:-3:-1][::-1])} = {price1}\n{":".join(time2.split()[:-3:-1][::-1])} = {price2}\n{"#"*30}\n'
+                message += f'{name}/USDT {change}%: \n{":".join(time1.split()[-2:-4:-1][::-1])} = {price1}\n{":".join(time2.split()[:-3:-1][::-1])} = {price2}\n{"#"*30}\n'
  
                 if index % 10 == 9:
                     message += '```'
