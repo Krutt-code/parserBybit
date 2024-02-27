@@ -6,7 +6,7 @@ from os import path
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = path.join('bots', 'bot', 'manage_data', self.config.data.data_file_name)
+        self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
         self.time = time
 
     def __get_time(self):
