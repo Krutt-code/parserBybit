@@ -14,11 +14,11 @@ class BotBybit:
 
     def __get_time(self):
         date = datetime.now() + timedelta(hours=3)
-        return date.strftime('%Y %m %d %H %M')
+        return date.strftime('%Y %m %d %H %M %S')
 
     def __get_difference_seconds(self, time):
         new_date = self.__get_time()
-        date = int((new_date - (datetime(*map(int, time.split())))).total_seconds()) - 1
+        date = int((((datetime(*map(int, new_date.split())))) - (datetime(*map(int, time.split())))).total_seconds()) - 1
         return (self.config.data.period_time * 60) - date
 
     async def __send_message_to_user(self, data: dict) -> None:
@@ -54,7 +54,8 @@ class BotBybit:
     async def main(self):
         while True:
             # Проверяем условие
-            data = DataM(config=self.config, time=self.__get_time()).run()
+            time = self.__get_time()
+            data = DataM(config=self.config, time=time).run()
             # print('\n'.join(data.values()))
             if any(i for i in data.values()):
                 self.bot = Bot(token=self.config.tg_bot.token,
@@ -62,9 +63,8 @@ class BotBybit:
                 await self.__send_message_to_user(data=data)
             else:
                 logger.info('Нет данных для отправки')
-
             
-            await asyncio.sleep(self.__get_difference_seconds()) 
+            await asyncio.sleep(self.__get_difference_seconds(time=time)) 
 
     def run(self):
         asyncio.run(self.main())
