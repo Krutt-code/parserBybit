@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from os import path
 
-
 class DataM:
     def __init__(self, config) -> None:
         self.config = config
