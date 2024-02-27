@@ -7,7 +7,8 @@ from os import path
 class DataM:
     def __init__(self, config) -> None:
         self.config = config
-        self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
+        self.data_path = path.join('bots', 'bot', 'manage_data', self.config.data.data_file_name)
+        
 
     def __update_data_prices(self):
         
@@ -56,7 +57,7 @@ class DataM:
         new_data = {}
 
         for time, item in data.items():
-            time_now = datetime.now().strftime("%Y %m %d %H %M")
+            time_now = self.__get_time()
             if ((datetime(*map(int, time_now.split())) - datetime(*map(int, time.split()))).total_seconds() // 60) <= self.config.data.period_time*4:
                 new_data[time] = item
 
@@ -77,7 +78,9 @@ class DataM:
 
         self.__update_data_prices()
 
-        if len((new_data := self.__remove_old_data(self.__read_data())).items()) > 1:
+        new_data = self.__remove_old_data(self.__read_data())
+
+        if len(new_data.items()) > 1:
             items = list(new_data.items())[::-1]
             for item in items[1:]:
                 time_difference = self.__calculate_time_difference_minutes(
@@ -90,19 +93,21 @@ class DataM:
                         data['🟡'] = self.__change_check([items[0], item])
                         return data
 
-                if time_difference >= self.config.data.period_time*2:
+                elif time_difference >= self.config.data.period_time*2:
                     if not data['🟠']:
                         data['🟠'] = self.__change_check([items[0], item])
                         continue
-                else:
-                    continue
 
-                if time_difference >= self.config.data.period_time:
+                elif time_difference >= self.config.data.period_time:
                     if not data['🔴']:
                         data['🔴'] = self.__change_check([items[0], item])
                         continue
+                
+                else:
+                    continue
                     
             return data
+        
         return data
 
 

@@ -2,9 +2,9 @@ from aiogram import Bot, Dispatcher
 from .manage_data import DataM
 
 import logging
+import logging.handlers
+
 import asyncio
-
-
 
 class BotBybit:
     def __init__(self, config) -> None:
@@ -45,15 +45,21 @@ class BotBybit:
 
     async def background_task(self):
 
-        logging.basicConfig(filename='telegram_bot.log', level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        handler = logging.handlers.TimedRotatingFileHandler('parser_tg_bot.log', when="W0", interval=1, backupCount=1)
+        handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
 
         while True:
             # Проверяем условие
-            if data := DataM(config=self.config).run():
+            data = DataM(config=self.config).run()
+            if any(i for i in data.values()):
                 await self.__send_message_to_user(data=data)
             else:
                 pass
+            
                 # await self.bot.send_message(self.canal_id, '\[INFO] Нет данных для сравнения')
             await asyncio.sleep(self.config.data.period_time * 60) 
 

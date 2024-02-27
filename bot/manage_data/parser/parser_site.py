@@ -1,11 +1,14 @@
 from seleniumbase import Driver
 from bs4 import BeautifulSoup as BS
 from selenium.webdriver.common.by import By
+from time import sleep
 
 try:
     from json_handler import JsonHandler
 except:
     from .json_handler import JsonHandler
+
+import logging
 
 class ParserBybit:
     def __init__(self) -> None:
@@ -46,23 +49,28 @@ class ParserBybit:
     def run(self) -> dict:
         url = 'https://www.bybit.com/ru-RU/markets/overview'
 
-        with Driver(uc=True) as driver:
-            print('[INFO] Начинаю сбор данных')
-            driver.get(url)
-            driver.implicitly_wait(10)
-            
-            page_count = self.__get_count_pages(driver=driver)
-            print(' - [INFO] Страница 1 собираеться')
-            for page in range(2, page_count + 1):
-                self.__get_data(driver=driver)
-                print(f' - [INFO] Страница {page} собрана')
-                self.__next_page(driver=driver, page=page)
+        logger = logging.getLogger()
 
-        # data['data'] = data_m
-        print('[INFO] Сбор данных завершен')
-        print('#'*50)
-        return self.data
+        while True:
+            try:
+                with Driver(uc=True) as driver:
+                    logger.info('Начинаю сбор данных')
+                    driver.get(url)
+                    driver.implicitly_wait(10)
+                    
+                    page_count = self.__get_count_pages(driver=driver)
+                    logger.info(' - Страница 1 собираеться')
+                    for page in range(2, page_count + 1):
+                        self.__get_data(driver=driver)
+                        logger.info(f' - Страница {page} собрана')
+                        self.__next_page(driver=driver, page=page)
 
+                # data['data'] = data_m
+                logger.info('Сбор данных завершен')        
+                return self.data
+            except Exception as e:
+                logger.error(f'{e}')
+                sleep(10)
 
 if __name__ == '__main__':
     pars = ParserBybit()

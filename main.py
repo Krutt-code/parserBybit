@@ -4,7 +4,10 @@ from bot import BotBybit
 from os import path
 
 def main():
-    config: Config = load_config(path.join('.env'))
+    try:
+        config: Config = load_config(path.join('.env'))
+    except:
+        config: Config = load_config(path.join('bots', '.env'))
 
     bot = BotBybit(config=config)
 
