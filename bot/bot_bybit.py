@@ -51,7 +51,7 @@ class BotBybit:
  
                 message += '```'
 
-                data_path = path.join('bots', self.config.data.data_file_name)
+                data_path = self.config.data.data_file_name
                 try:
                     with open(data_path) as file:
                         CreateSchedule(symbol=name, data=json.load(file)).run()
