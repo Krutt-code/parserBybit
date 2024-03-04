@@ -3,10 +3,16 @@ from datetime import datetime, timedelta
 
 from os import path
 
+import logging
+
+
+
+logger = logging.getLogger('parser')
+
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = self.config.data.data_file_name
+        self.data_path = path.join('manage_data', self.config.data.data_file_name)
         self.time = time
 
     def __get_time(self):
@@ -54,9 +60,9 @@ class DataM:
     
     def __remove_old_data(self, data: dict) -> dict:
         new_data = {}
+        time_now = self.__get_time()
 
         for time, item in data.items():
-            time_now = self.__get_time()
             if ((datetime(*map(int, time_now.split())) - datetime(*map(int, time.split()))).total_seconds() // 60) <= (self.config.data.period_time*4 + 1):
                 new_data[time] = item
 
@@ -77,7 +83,11 @@ class DataM:
 
         self.__update_data_prices()
 
-        new_data = self.__remove_old_data(self.__read_data())
+
+        try:
+            new_data = self.__remove_old_data(self.__read_data())
+        except Exception as e:
+            logger.error(e)
 
         if len(new_data.items()) > 1:
             items = list(new_data.items())[::-1]
