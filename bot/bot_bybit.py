@@ -52,8 +52,11 @@ class BotBybit:
                 message += '```'
 
                 data_path = path.join('bots', self.config.data.data_file_name)
-                with open(data_path) as file:
-                    CreateSchedule(symbol=name, data=json.load(file)).run()
+                try:
+                    with open(data_path) as file:
+                        CreateSchedule(symbol=name, data=json.load(file)).run()
+                except Exception as e:
+                    logger.error(e)
 
                 try:
                     await bot.send_photo(self.canal_id, FSInputFile("graph_image.png"), caption=message)
