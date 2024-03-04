@@ -5,14 +5,12 @@ from os import path
 
 import logging
 
-
-
 logger = logging.getLogger('parser')
 
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = path.join('manage_data', self.config.data.data_file_name)
+        self.data_path = 'bots/' + self.config.data.data_file_name
         self.time = time
 
     def __get_time(self):
@@ -32,8 +30,11 @@ class DataM:
         return time_diff.total_seconds() / 60
     
     def __read_data(self):
-        return JsonHandler(self.data_path).read_json()
-    
+        try: 
+            return JsonHandler(self.data_path).read_json()
+        except Exception as e:
+            logger.error(e)
+
     def __change_check(self, data):
         time1, time2 = data[0][0], data[1][0]
         prices1, prices2 = data[0][1], data[1][1]
@@ -82,7 +83,6 @@ class DataM:
             JsonHandler(self.data_path).write_json({})
 
         self.__update_data_prices()
-
 
         try:
             new_data = self.__remove_old_data(self.__read_data())

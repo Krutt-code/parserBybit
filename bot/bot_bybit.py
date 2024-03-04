@@ -1,7 +1,6 @@
 from aiogram import Bot
 from aiogram.types.input_file import FSInputFile
 from datetime import datetime, timedelta
-from os import path
 from time import sleep
 
 from .manage_data import DataM
@@ -16,6 +15,8 @@ class BotBybit:
     def __init__(self, config) -> None:
         self.config = config
         self.canal_id = self.config.tg_bot.canal_id
+        self.bot = Bot(token=self.config.tg_bot.token,
+                parse_mode='Markdown')
 
     def __get_time(self):
         date = datetime.now() + timedelta(hours=3)
@@ -27,8 +28,6 @@ class BotBybit:
         return (self.config.data.period_time * 60) - date
 
     async def __send_message_to_user(self, data: dict) -> None:
-        bot = Bot(token=self.config.tg_bot.token,
-                parse_mode='Markdown')
         for mode, item in data.items():
 
             if not item:
@@ -51,7 +50,7 @@ class BotBybit:
  
                 message += '```'
 
-                data_path = self.config.data.data_file_name
+                data_path = 'bots/' + self.config.data.data_file_name
                 try:
                     with open(data_path) as file:
                         CreateSchedule(symbol=name, data=json.load(file)).run()
@@ -59,14 +58,10 @@ class BotBybit:
                     logger.error(e)
 
                 try:
-                    await bot.send_photo(self.canal_id, FSInputFile("graph_image.png"), caption=message)
+                    await self.bot.send_photo(self.canal_id, FSInputFile("graph_image.png"), caption=message)
                 except Exception as e:
                     logger.error(e)
                     sleep(20)
-                    
-
-
-        sleep(2)
 
         logger.info('Сообщение успешно отправлено')
 
