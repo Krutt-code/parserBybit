@@ -6,7 +6,7 @@ from os import path
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = path.join('bot', 'manage_data', self.config.data.data_file_name)
+        self.data_path = self.config.data.data_file_name
         self.time = time
 
     def __get_time(self):
@@ -23,7 +23,7 @@ class DataM:
     
     def __calculate_time_difference_minutes(self, start_time, end_time):
         time_diff = datetime(*map(int, end_time.split())) - datetime(*map(int, start_time.split()))
-        return time_diff.total_seconds() // 60
+        return time_diff.total_seconds() / 60
     
     def __read_data(self):
         return JsonHandler(self.data_path).read_json()
@@ -57,7 +57,7 @@ class DataM:
 
         for time, item in data.items():
             time_now = self.__get_time()
-            if ((datetime(*map(int, time_now.split())) - datetime(*map(int, time.split()))).total_seconds() // 60) <= self.config.data.period_time*4:
+            if ((datetime(*map(int, time_now.split())) - datetime(*map(int, time.split()))).total_seconds() // 60) <= (self.config.data.period_time*4 + 1):
                 new_data[time] = item
 
         if len(data.items()) != len(new_data.items()):
@@ -85,7 +85,7 @@ class DataM:
                 time_difference = self.__calculate_time_difference_minutes(
                     start_time=item[0],
                     end_time  =items[0][0]
-                )
+                ) + 0.5
 
                 if time_difference >= self.config.data.period_time*4:
                     if not data['🟡']:
