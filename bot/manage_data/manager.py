@@ -10,7 +10,7 @@ logger = logging.getLogger('parser')
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = 'bots/' + self.config.data.data_file_name
+        self.data_path = self.config.data.data_file_name
         self.time = time
 
     def __get_time(self):
