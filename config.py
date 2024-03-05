@@ -11,14 +11,19 @@ class TgBot:
 class DataManagement:
     period_time: int
     height: str
-    data_file_name: str
+    data_file_path: str
     negative_change: int
 
+
+@dataclass
+class Parser:
+    mode: int
 
 @dataclass
 class Config:
     tg_bot: TgBot
     data: DataManagement
+    parser: Parser
 
 
 def load_config(path: str) -> Config:
@@ -32,7 +37,10 @@ def load_config(path: str) -> Config:
         data=DataManagement(
             period_time=int(env('TIME')),
             height=int(env('HEIGHT')),
-            data_file_name=env('DATA_FILE_NAME'),
+            data_file_path=env('DATA_FILE_PATH'),
             negative_change=int(env('NEGATIVE_CHANGE'))
+        ),
+        parser=Parser(
+            mode=int(env('CATEGORY'))
         )
     )

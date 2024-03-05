@@ -46,11 +46,11 @@ class BotBybit:
                 time1, price1 = item1
                 time2, price2 = item2
                 change = round(((price2 - price1) / price2) * 100, 1)
-                message += f'{name}/USDT {change}%: \n{":".join(time1.split()[-3:-1])} = {price1}\n{":".join(time2.split()[-3:-1])} = {price2}\n'
+                message += f'${name} {change}%: \n{":".join(time1.split()[-3:-1])} = {price1}\n{":".join(time2.split()[-3:-1])} = {price2}\n'
  
                 message += '```'
 
-                data_path = self.config.data.data_file_name
+                data_path =  self.config.data.data_file_path
                 try:
                     with open(data_path) as file:
                         CreateSchedule(symbol=name, data=json.load(file)).run()

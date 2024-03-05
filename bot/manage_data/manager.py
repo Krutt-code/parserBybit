@@ -10,7 +10,7 @@ logger = logging.getLogger('parser')
 class DataM:
     def __init__(self, config, time) -> None:
         self.config = config
-        self.data_path = self.config.data.data_file_name
+        self.data_path = self.config.data.data_file_path
         self.time = time
 
     def __get_time(self):
@@ -21,7 +21,7 @@ class DataM:
         
         JsonHandler(self.data_path).write_to_json(
             {
-            self.time: ParserBybit().run()
+            self.time: ParserBybit(mode=self.config.parser.mode).run()
             }
         )
     
